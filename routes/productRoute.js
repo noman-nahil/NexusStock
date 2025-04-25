@@ -46,11 +46,8 @@ const deleteProduct = (req, res) => {
     const product = products.find((product) => product.id === id);
     if (product) {
       const newProductList = products.filter((product) => product.id !== id);
-      products = newProductList;
-      res.send({
-        message: "Product Successfully Removed",
-        product,
-        newProductList: newProductList,
+      db.postNewProduct(newProductList).then((data) => {
+        res.send({ message: "Product remove successfully", newProductList });
       });
     } else {
       res.status(400).send("Not Found");
