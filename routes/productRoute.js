@@ -38,8 +38,30 @@ const updateProduct = (req, res) => {
   });
 };
 
+const deleteProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  db.getProductData().then((products) => {
+    const product = products.find((product) => product.id === id);
+    if (product) {
+      const newProductList = products.filter((product) => product.id !== id);
+      products = newProductList;
+      res.send({
+        message: "Product Successfully Removed",
+        product,
+        newProductList: newProductList,
+      });
+    } else {
+      res.status(400).send("Not Found");
+    }
+  });
+};
+
 router.route("/").get(productList);
 
-router.route("/:id").get(getProductDetails).put(updateProduct);
+router
+  .route("/:id")
+  .get(getProductDetails)
+  .put(updateProduct)
+  .delete(deleteProduct);
 
 module.exports = router;
