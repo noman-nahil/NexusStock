@@ -21,8 +21,25 @@ const getProductDetails = (req, res) => {
   });
 };
 
+const updateProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  console.log(id);
+  const updates = req.body;
+  console.log(updates);
+  db.getProductData().then((products) => {
+    const productIndex = products.findIndex((product) => product.id === id);
+    console.log(productIndex);
+    if (productIndex === -1) {
+      res.status(400).send("Not Found");
+    } else {
+      products[productIndex] = { ...products[productIndex], ...updates };
+      res.send(products[productIndex]);
+    }
+  });
+};
+
 router.route("/").get(productList);
 
-router.route("/:id").get(getProductDetails);
+router.route("/:id").get(getProductDetails).put(updateProduct);
 
 module.exports = router;
