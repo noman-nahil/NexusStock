@@ -63,7 +63,9 @@ const addNewProduct = (req, res) => {
       ...newProduct,
     };
     products.push(product);
-    res.send(products);
+    db.postNewProduct(products).then((data) => {
+      res.send({ message: "New Product added successfully", products });
+    });
   });
 };
 
