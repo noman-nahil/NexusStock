@@ -33,7 +33,9 @@ const updateProduct = (req, res) => {
       res.status(400).send("Not Found");
     } else {
       products[productIndex] = { ...products[productIndex], ...updates };
-      res.send(products[productIndex]);
+      db.postNewProduct(products).then((data) => {
+        res.send(products[productIndex]);
+      });
     }
   });
 };
