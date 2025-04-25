@@ -56,7 +56,19 @@ const deleteProduct = (req, res) => {
   });
 };
 
-router.route("/").get(productList);
+const addNewProduct = (req, res) => {
+  const newProduct = req.body;
+  db.getProductData().then((products) => {
+    const product = {
+      id: products[products.length - 1].id + 1,
+      ...newProduct,
+    };
+    products.push(product);
+    res.send(products);
+  });
+};
+
+router.route("/").get(productList).post(addNewProduct);
 
 router
   .route("/:id")
